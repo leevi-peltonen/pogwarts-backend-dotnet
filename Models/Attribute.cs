@@ -9,7 +9,7 @@ namespace web_api.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int AttributeId { get; set; }
         public string Name { get; set; }
-        public string Value { get; set; }
+        public int Value { get; set; }
         public ICollection<Character> Characters { get; set; }
         
     }

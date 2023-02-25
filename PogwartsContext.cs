@@ -11,7 +11,6 @@ namespace web_api
         public DbSet<Character> Character { get; set; }
         public DbSet<Weapon> Weapon { get; set; }
         public DbSet<Armor> Armor { get; set; }
-        public DbSet<Attribute> Attribute { get; set; }
 
 
 
@@ -23,7 +22,6 @@ namespace web_api
             modelBuilder.Entity<Character>().ToTable("Character");
             modelBuilder.Entity<Weapon>().ToTable("Weapon");
             modelBuilder.Entity<Armor>().ToTable("Armor");
-            modelBuilder.Entity<Attribute>().ToTable("Attribute");
             // one to many: 1 user, many characters
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Characters)
@@ -48,15 +46,6 @@ namespace web_api
                 l => l.HasOne<Character>().WithMany().HasForeignKey("CharacterId"),
                 je => je.HasKey("ArmorId", "CharacterId"));
 
-            //many to many: many attributes, many characters
-            modelBuilder.Entity<Character>()
-                .HasMany(c => c.Attributes)
-                .WithMany(a => a.Characters)
-                .UsingEntity<Dictionary<string, object>>(
-                "CharacterAttributes",
-                r => r.HasOne<Attribute>().WithMany().HasForeignKey("AttributeId"),
-                l => l.HasOne<Character>().WithMany().HasForeignKey("CharacterId"),
-                je => je.HasKey("AttributeId", "CharacterId"));
 
             // one to many: character equipped weapon
             modelBuilder.Entity<Weapon>()
@@ -71,4 +60,3 @@ namespace web_api
         }
     }
 }
-// .OnDelete(DeleteBehavior.ClientSendNull);

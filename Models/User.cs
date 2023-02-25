@@ -10,6 +10,6 @@ namespace web_api.Models
         public int UserId { get; set; }
         public string Name { get; set; }
         public string PasswordHash { get; set; }
-        public ICollection<Character> Characters { get; set; }
+        public ICollection<Character>? Characters { get; set; }
     }
 }
