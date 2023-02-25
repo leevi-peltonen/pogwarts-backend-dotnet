@@ -11,6 +11,8 @@ namespace web_api.Models
         public int Damage { get; set; }
         public int Price { get; set; }
         public string Rarity { get; set; }
-        public ICollection<Character> Characters { get; set; }
+        public ICollection<Character>? CharactersInventory { get; set; }
+        
+        public ICollection<Character>? CharactersEquipped { get; set; }
     }
 }

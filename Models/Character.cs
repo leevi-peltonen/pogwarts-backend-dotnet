@@ -16,12 +16,16 @@ namespace web_api.Models
         public int AvailableAttributePoints { get; set; }
         public int Coins { get; set; }
         public int HighestLevelOfKilledMonsters { get; set; }
-        public int EquippedWeaponId { get; set; }
-        public int EquippedArmorId { get; set; }
         public User User { get; set; }
-        public ICollection<Weapon> Weapons { get; set; }
-        public ICollection<Armor> Armor { get; set; }
+
+
+        public virtual ICollection<Weapon>? InventoryWeapons { get; set; }
+        public virtual ICollection<Armor> InventoryArmor { get; set; }
         public ICollection<Attribute> Attributes { get; set; }
 
+
+        public virtual Weapon EquippedWeapon { get; set; }
+
+        public virtual Armor EquippedArmor { get; set; }
     }
 }

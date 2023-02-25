@@ -10,5 +10,7 @@ namespace web_api.Models
         public int AttributeId { get; set; }
         public string Name { get; set; }
         public string Value { get; set; }
+        public ICollection<Character> Characters { get; set; }
+        
     }
 }
