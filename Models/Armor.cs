@@ -10,7 +10,7 @@ namespace web_api.Models
         public string Description { get; set; }
         public int Defense { get; set; }
         public int Price { get; set; }
-        public string Rarity { get; set; }
+        public Rarity Rarity { get; set; }
 
         public ICollection<Character>? CharactersInventory { get; set; }
 

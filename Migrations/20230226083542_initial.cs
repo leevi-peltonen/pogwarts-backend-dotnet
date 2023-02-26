@@ -5,7 +5,7 @@
 namespace web_api.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,7 +20,7 @@ namespace web_api.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Defense = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<int>(type: "int", nullable: false),
-                    Rarity = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Rarity = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,7 +51,7 @@ namespace web_api.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Damage = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<int>(type: "int", nullable: false),
-                    Rarity = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Rarity = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {

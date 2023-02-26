@@ -3,7 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using web_api;
 using web_api.Services;
 using web_api.Profiles;
-
+using web_api.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Data;
+using Newtonsoft.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +24,10 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<CharacterService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<WeaponService>();
+builder.Services.AddScoped<EnemyService>();
 
+builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped(provider => new MapperConfiguration(cfg =>
 {
     cfg.AddProfile(new CharacterProfile(provider.GetService<PogwartsContext>()));
@@ -29,6 +35,19 @@ builder.Services.AddScoped(provider => new MapperConfiguration(cfg =>
     cfg.AddProfile(new WeaponProfile());
     cfg.AddProfile(new ArmorProfile());
 }).CreateMapper());
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllHeaders",
+    corsbuilder =>
+    {
+        corsbuilder.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .WithOrigins("http://localhost:3000");
+    });
+});
+
 
 
 
@@ -39,8 +58,26 @@ var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
 {
+    
     var services = scope.ServiceProvider;
     var context = services.GetRequiredService<PogwartsContext>();
+
+    if (!context.Weapon.Any())
+    {
+        var weaponsJson = File.ReadAllText("weapons.json");
+        var weapons = JsonConvert.DeserializeObject<List<Weapon>>(weaponsJson);
+
+        context.Weapon.AddRange(weapons);
+        context.SaveChanges();
+    }
+    if (!context.Enemy.Any())
+    {
+        var enemyJson = File.ReadAllText("enemies.json");
+        var enemies = JsonConvert.DeserializeObject<List<Enemy>>(enemyJson);
+
+        context.Enemy.AddRange(enemies);
+        context.SaveChanges();
+    }
     context.Database.EnsureCreated();
 }
 
@@ -53,9 +90,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseCors();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

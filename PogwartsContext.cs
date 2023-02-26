@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using web_api.Models;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using Attribute = web_api.Models.Attribute;
+using System.Data;
 
 namespace web_api
 {
@@ -11,7 +14,7 @@ namespace web_api
         public DbSet<Character> Character { get; set; }
         public DbSet<Weapon> Weapon { get; set; }
         public DbSet<Armor> Armor { get; set; }
-
+        public DbSet<Enemy> Enemy { get; set; }
 
 
         public PogwartsContext(DbContextOptions<PogwartsContext> options) : base(options) { }
@@ -22,6 +25,7 @@ namespace web_api
             modelBuilder.Entity<Character>().ToTable("Character");
             modelBuilder.Entity<Weapon>().ToTable("Weapon");
             modelBuilder.Entity<Armor>().ToTable("Armor");
+            modelBuilder.Entity<Enemy>().ToTable("Enemy");
             // one to many: 1 user, many characters
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Characters)

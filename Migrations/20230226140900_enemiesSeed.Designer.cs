@@ -12,8 +12,8 @@ using web_api;
 namespace web_api.Migrations
 {
     [DbContext(typeof(PogwartsContext))]
-    [Migration("20230225184936_init")]
-    partial class init
+    [Migration("20230226140900_enemiesSeed")]
+    partial class enemiesSeed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -77,9 +77,8 @@ namespace web_api.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<string>("Rarity")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Rarity")
+                        .HasColumnType("int");
 
                     b.HasKey("ArmorId");
 
@@ -145,6 +144,38 @@ namespace web_api.Migrations
                     b.ToTable("Character", (string)null);
                 });
 
+            modelBuilder.Entity("web_api.Models.Enemy", b =>
+                {
+                    b.Property<int>("EnemyId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnemyId"));
+
+                    b.Property<int>("Attack")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Defense")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Health")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsAlive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("EnemyId");
+
+                    b.ToTable("Enemy", (string)null);
+                });
+
             modelBuilder.Entity("web_api.Models.User", b =>
                 {
                     b.Property<int>("UserId")
@@ -188,9 +219,8 @@ namespace web_api.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<string>("Rarity")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Rarity")
+                        .HasColumnType("int");
 
                     b.HasKey("WeaponId");
 

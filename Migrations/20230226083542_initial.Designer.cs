@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using web_api;
 
@@ -11,9 +12,11 @@ using web_api;
 namespace web_api.Migrations
 {
     [DbContext(typeof(PogwartsContext))]
-    partial class PogwartsContextModelSnapshot : ModelSnapshot
+    [Migration("20230226083542_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,38 +142,6 @@ namespace web_api.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Character", (string)null);
-                });
-
-            modelBuilder.Entity("web_api.Models.Enemy", b =>
-                {
-                    b.Property<int>("EnemyId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnemyId"));
-
-                    b.Property<int>("Attack")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Defense")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Health")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsAlive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Level")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("EnemyId");
-
-                    b.ToTable("Enemy", (string)null);
                 });
 
             modelBuilder.Entity("web_api.Models.User", b =>

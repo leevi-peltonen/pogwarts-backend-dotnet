@@ -13,7 +13,7 @@ namespace web_api.Profiles
             CreateMap<Character, CharacterReadDTO>();
             CreateMap<CharacterCreateDTO, Character>()
                 .ForMember(c => c.User, opt => opt
-                .MapFrom(cdto => context.User.Find(cdto.userId)));
+                .MapFrom(cdto => context.User.First(u => u.Name == cdto.userName)));
         }
     }
 }
