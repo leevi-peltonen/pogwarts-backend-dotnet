@@ -7,5 +7,6 @@
         public int Dexterity { get; set; }
         public int Intelligence { get; set; }
         public string userName { get; set; }
+        public string weaponName { get; set; }
     }
 }

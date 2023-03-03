@@ -36,6 +36,21 @@ namespace web_api.Controllers
             return _mapper.Map<WeaponReadDTO>(weapon);
         }
 
+        [HttpGet]   
+        public async Task<ActionResult<IEnumerable<WeaponReadDTO>>> GetAllWeapons()
+        {
+            var weapons = await _weaponService.GetAllWeaponsAsync();
+            return Ok(_mapper.Map<IEnumerable<WeaponReadDTO>>(weapons));
+        }
+
+
+        [HttpGet("create/{difficulty}")]
+        public async Task<ActionResult<WeaponReadDTO>> CreateWeapon(int difficulty)
+        {
+            var weapon = await _weaponService.CreateWeapon(difficulty);
+
+            return Ok(_mapper.Map<WeaponReadDTO>(weapon));
+        }
 
     }
 }

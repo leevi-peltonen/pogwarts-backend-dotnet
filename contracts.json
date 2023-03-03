@@ -1,0 +1,16 @@
+[
+  {
+    "Name": "Goblin Ambush",
+    "Description": "Defeat 15 goblins that are ambushing a travelling merchant.",
+    "NumEnemies": 15,
+    "RewardCoins": 150,
+    "ActiveCharacter": null
+  },
+  {
+    "Name": "Skeleton Shenanigans",
+    "Description": "Defeat 20 skeletons that have been spotted in the nearby graveyard.",
+    "NumEnemies": 20,
+    "RewardCoins": 200,
+    "ActiveCharacter": null
+  }
+]

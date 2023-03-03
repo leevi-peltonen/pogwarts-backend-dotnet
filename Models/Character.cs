@@ -7,13 +7,6 @@ namespace web_api.Models
     public class Character
     {
 
-        public enum AttributeType
-        {
-            Strength,
-            Dexterity,
-            Intelligence
-        }
-
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int CharacterId { get; set; }
@@ -21,6 +14,7 @@ namespace web_api.Models
         public int Level { get; set; } = 1;
         public int Experience { get; set; } = 0;
         public int Health { get; set; } = 100;
+        public int MaxHealth { get; set; } = 100;
         public int AvailableAttributePoints { get; set; } = 0;
         public int Coins { get; set; } = 0;
         public int HighestLevelOfKilledMonsters { get; set; } = 0;
@@ -28,10 +22,11 @@ namespace web_api.Models
         public int Dexterity { get; set; }
         public int Intelligence { get; set; }
         public User User { get; set; }
-
-
+        public Contract? ActiveContract { get; set; }
         public virtual ICollection<Weapon>? InventoryWeapons { get; set; }
         public virtual ICollection<Armor>? InventoryArmor { get; set; }
+
+        public int? EquippedWeaponId { get; set; }
 
         public virtual Weapon? EquippedWeapon { get; set; }
 

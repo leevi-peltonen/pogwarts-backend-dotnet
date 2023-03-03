@@ -8,7 +8,13 @@ namespace web_api.Profiles
     {
         public WeaponProfile()
         {
-            CreateMap<Weapon, WeaponReadDTO>();
+            CreateMap<Weapon, WeaponReadDTO>()
+                .ForMember(wrdto => wrdto.Rarity, opt => opt
+                .MapFrom(w => Enum.GetName(typeof(Rarity), w.Rarity)));
+
+            CreateMap<WeaponReadDTO, Weapon>();
+
+                
         }
     }
 }

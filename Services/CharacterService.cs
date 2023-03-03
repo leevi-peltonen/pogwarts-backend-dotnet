@@ -18,6 +18,8 @@ namespace web_api.Services
             var characters = await _context.Character
                 .Include(c => c.InventoryWeapons)
                 .Include(c => c.InventoryArmor)
+                .Include(c => c.ActiveContract)
+                .Include(c => c.EquippedWeapon)
                 .ToListAsync();
 
             return characters;
@@ -70,7 +72,11 @@ namespace web_api.Services
 
         public async Task<Character> UpdateCoinsAsync(int coins, string characterName)
         {
-            var character = await _context.Character.FirstOrDefaultAsync(c => c.Name == characterName);
+            var character = await _context.Character
+                .Include(c => c.InventoryWeapons)
+                .Include(c => c.EquippedWeapon)
+                .Include(c => c.ActiveContract)
+                .FirstOrDefaultAsync(c => c.Name == characterName);
             character.Coins = coins;
             await _context.SaveChangesAsync();
             return character;
@@ -104,6 +110,100 @@ namespace web_api.Services
             return character;
         }
 
+        public async Task<Character> EquipWeaponAsync(string weaponName, string characterName)
+        {
+            var character = _context.Character
+                .Include(c => c.InventoryWeapons)
+                .Include(c => c.EquippedWeapon)
+                .First(c => c.Name == characterName);
+
+            if(character == null)
+            {
+                throw new ArgumentException($"Character with name '{characterName}' not found");
+            }
+
+            var inventoryWeapons = character.InventoryWeapons ?? new List<Weapon>();
+
+            var weapon = inventoryWeapons.First(w => w.Name == weaponName);
+
+            if (weapon == null)
+            {
+                throw new ArgumentException($"Weapon with name '{weaponName}' not found in '{characterName}''s inventory");
+            }
+
+            var currentlyEquippedWeapon = character.EquippedWeapon;
+
+            if (currentlyEquippedWeapon != null)
+            {
+                inventoryWeapons.Add(currentlyEquippedWeapon);
+            }
+
+            character.EquippedWeapon = weapon;
+            inventoryWeapons.Remove(weapon);
+            character.InventoryWeapons = inventoryWeapons;
+            await _context.SaveChangesAsync();
+
+            return character;
+
+        }
+
+        public async Task<Character> ChangeActiveContractAsync(string contractName, string characterName)
+        {
+            var character = await _context.Character.FirstOrDefaultAsync(c => c.Name == characterName);
+            var contractDetails = await _context.Contract
+                .Where(c => c.Name == contractName && c.ActiveCharacter == null)
+                .FirstOrDefaultAsync();
+            var contract = new Contract()
+            {
+                Name = contractDetails.Name,
+                Description = contractDetails.Description,
+                NumEnemies = contractDetails.NumEnemies,
+                RewardCoins = contractDetails.RewardCoins,
+                ActiveCharacter = characterName
+            };
+            character.ActiveContract = contract;
+            await _context.SaveChangesAsync();
+            return character;
+        }
+
+        public async Task<Character> LootWeaponAsync(Weapon weapon, string characterName)
+        {
+            var character = await _context.Character
+                .Include(c => c.InventoryWeapons)
+                .Include(c => c.EquippedWeapon)
+                .Include(c => c.ActiveContract)
+                .FirstOrDefaultAsync(c => c.Name == characterName);
+            if (character == null) return null;
+            if (character.InventoryWeapons == null) character.InventoryWeapons = new List<Weapon>();
+            _context.Weapon.Attach(weapon);
+            character.InventoryWeapons.Add(weapon);
+            await _context.SaveChangesAsync();
+            return character;
+        }
+
+        public async Task<Character> UpdateHealthAsync(int health, string characterName)
+        {
+            var character = await _context.Character
+                .Include(c => c.InventoryWeapons)
+                .Include(c => c.EquippedWeapon)
+                .Include(c => c.ActiveContract)
+                .FirstOrDefaultAsync(c => c.Name == characterName);
+            character.Health = health;
+            await _context.SaveChangesAsync();
+            return character;
+        }
+
+        public async Task<Character> UpdateMaxHealthAsync(int maxHealth, string characterName)
+        {
+            var character = await _context.Character
+                .Include(c => c.InventoryWeapons)
+                .Include(c => c.EquippedWeapon)
+                .Include(c => c.ActiveContract)
+                .FirstOrDefaultAsync(c => c.Name == characterName);
+            character.MaxHealth = maxHealth;
+            await _context.SaveChangesAsync();
+            return character;
+        }
 
         private bool CharacterExists(string characterName)
         {

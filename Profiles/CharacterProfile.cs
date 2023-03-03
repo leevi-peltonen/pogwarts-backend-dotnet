@@ -6,14 +6,16 @@ namespace web_api.Profiles
 {
     public class CharacterProfile : Profile
     {
-        public readonly PogwartsContext PogwartsContext;
+        private readonly PogwartsContext _context;
         public CharacterProfile(PogwartsContext context) 
         {
-            PogwartsContext = context;
+            _context = context;
             CreateMap<Character, CharacterReadDTO>();
             CreateMap<CharacterCreateDTO, Character>()
                 .ForMember(c => c.User, opt => opt
-                .MapFrom(cdto => context.User.First(u => u.Name == cdto.userName)));
+                .MapFrom(cdto => _context.User.First(u => u.Name == cdto.userName)))
+                .ForMember(c => c.EquippedWeapon, opt => opt
+                .MapFrom(cdto => _context.Weapon.First(w => w.Name == cdto.weaponName)));
         }
     }
 }

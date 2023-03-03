@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using web_api;
 
@@ -11,9 +12,11 @@ using web_api;
 namespace web_api.Migrations
 {
     [DbContext(typeof(PogwartsContext))]
-    partial class PogwartsContextModelSnapshot : ModelSnapshot
+    [Migration("20230301073408_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,94 +68,6 @@ namespace web_api.Migrations
                     b.HasKey("ArmorId");
 
                     b.ToTable("Armor", (string)null);
-                });
-
-            modelBuilder.Entity("web_api.Models.Boss", b =>
-                {
-                    b.Property<int>("BossId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BossId"));
-
-                    b.Property<int>("Defense")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Health")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsAlive")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Level")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaxDamage")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaxHealth")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MinDamage")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("BossId");
-
-                    b.ToTable("Boss", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            BossId = 1,
-                            Defense = 50,
-                            Health = 1000,
-                            IsAlive = true,
-                            Level = 50,
-                            MaxDamage = 74,
-                            MaxHealth = 1000,
-                            MinDamage = 48,
-                            Name = "Malakar the Dark Lord"
-                        },
-                        new
-                        {
-                            BossId = 2,
-                            Defense = 50,
-                            Health = 1000,
-                            IsAlive = true,
-                            Level = 50,
-                            MaxDamage = 62,
-                            MaxHealth = 1000,
-                            MinDamage = 47,
-                            Name = "Drogath the Colossus Ogre"
-                        },
-                        new
-                        {
-                            BossId = 3,
-                            Defense = 50,
-                            Health = 1000,
-                            IsAlive = true,
-                            Level = 50,
-                            MaxDamage = 65,
-                            MaxHealth = 1000,
-                            MinDamage = 41,
-                            Name = "Azura the Elemental Queen"
-                        },
-                        new
-                        {
-                            BossId = 4,
-                            Defense = 50,
-                            Health = 1000,
-                            IsAlive = true,
-                            Level = 50,
-                            MaxDamage = 67,
-                            MaxHealth = 1000,
-                            MinDamage = 46,
-                            Name = "Ragnarok the World Ender"
-                        });
                 });
 
             modelBuilder.Entity("web_api.Models.Character", b =>
@@ -370,7 +285,7 @@ namespace web_api.Migrations
                             WeaponId = 1,
                             CritChance = 0f,
                             CritDamage = 0f,
-                            Damage = 25,
+                            Damage = 27,
                             Description = "A sword is a long, bladed weapon that is typically used for slashing or thrusting. It is commonly used in hand-to-hand combat, and can be wielded with one or two hands. Swords come in many shapes and sizes, and have been used throughout history by warriors and knights.",
                             LifestealChance = 0f,
                             Name = "Sword",
@@ -400,7 +315,7 @@ namespace web_api.Migrations
                             WeaponId = 3,
                             CritChance = 0f,
                             CritDamage = 0f,
-                            Damage = 23,
+                            Damage = 21,
                             Description = "A staff is a long, cylindrical weapon that is typically made from wood or metal. It can be used for both striking and blocking attacks, and is often used by martial artists or wizards.",
                             LifestealChance = 0f,
                             Name = "Staff",

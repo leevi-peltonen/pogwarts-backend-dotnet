@@ -65,6 +65,15 @@ namespace web_api.Controllers
             return _mapper.Map<CharacterReadDTO>(character);
         }
 
+        [HttpPatch("weapon/loot/{characterName}")]
+        public async Task<ActionResult<CharacterReadDTO>> LootWeapon([FromBody]WeaponReadDTO weapon, string characterName)
+        {
+            var character = await _characterService.LootWeaponAsync(_mapper.Map<Weapon>(weapon), characterName);
+            return _mapper.Map<CharacterReadDTO>(character);
+        }
+
+
+
         [HttpPatch("weapon/inventory/remove/{characterName}")]
         public async Task<ActionResult<CharacterReadDTO>> RemoveWeaponFromInventory([FromBody] string weaponName, string characterName)
         {
@@ -72,31 +81,62 @@ namespace web_api.Controllers
             return _mapper.Map<CharacterReadDTO>(character);
         }
 
-        [HttpPatch("coins")]
+        [HttpPatch("coins/{characterName}")]
         public async Task<ActionResult<CharacterReadDTO>> UpdateCoins([FromBody]int coins, string characterName)
         {
             var character = await _characterService.UpdateCoinsAsync(coins, characterName);
             return _mapper.Map<CharacterReadDTO>(character);
         }
 
-        [HttpPatch("attributes")]
+        [HttpPatch("attributes/{characterName}")]
         public async Task<ActionResult<CharacterReadDTO>> UpdateAttributes([FromBody] List<int> values, string characterName)
         {
             var character = await _characterService.UpdateAttributesAsync(values[0], values[1], values[2], characterName);
             return _mapper.Map<CharacterReadDTO>(character);
         }
 
-        [HttpPatch("level")]
+        [HttpPatch("level/{characterName}")]
         public async Task<ActionResult<CharacterReadDTO>> UpdateLevel([FromBody] int level, string characterName)
         {
             var character = await _characterService.UpdateLevelAsync(level, characterName);
             return _mapper.Map<CharacterReadDTO>(character);
         }
 
-        [HttpPatch("experience")]
+        [HttpPatch("experience/{characterName}")]
         public async Task<ActionResult<CharacterReadDTO>> UpdateExperience([FromBody] int experience, string characterName)
         {
             var character = await _characterService.UpdateExperienceAsync(experience, characterName);
+            return _mapper.Map<CharacterReadDTO>(character);
+        }
+
+        [HttpPatch("equip/weapon/{characterName}")]
+
+        public async Task<ActionResult<CharacterReadDTO>> EquipWeapon([FromBody] string weaponName, string characterName)
+        {
+            var character = await _characterService.EquipWeaponAsync(weaponName, characterName);
+            return _mapper.Map<CharacterReadDTO>(character);
+        }
+
+        [HttpPatch("contract/change/{characterName}")]
+
+        public async Task<ActionResult<CharacterReadDTO>> ChangeActiveContract([FromBody] string contractName, string characterName)
+        {
+            var character = await _characterService.ChangeActiveContractAsync(contractName, characterName);
+            return _mapper.Map<CharacterReadDTO>(character);
+        }
+
+        [HttpPatch("health/{characterName}")]
+
+        public async Task<ActionResult<CharacterReadDTO>> UpdateHealth([FromBody] int health, string characterName)
+        {
+            var character = await _characterService.UpdateHealthAsync(health, characterName);
+            return _mapper.Map<CharacterReadDTO>(character);
+        }
+
+        [HttpPatch("maxhealth/{characterName}")]
+        public async Task<ActionResult<CharacterReadDTO>> UpdateMaxHealth([FromBody] int maxHealth, string characterName)
+        {
+            var character = await _characterService.UpdateMaxHealthAsync(maxHealth, characterName);
             return _mapper.Map<CharacterReadDTO>(character);
         }
 

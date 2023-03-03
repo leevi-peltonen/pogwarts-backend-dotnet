@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using web_api;
 
@@ -11,9 +12,11 @@ using web_api;
 namespace web_api.Migrations
 {
     [DbContext(typeof(PogwartsContext))]
-    partial class PogwartsContextModelSnapshot : ModelSnapshot
+    [Migration("20230301134415_boss")]
+    partial class boss
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

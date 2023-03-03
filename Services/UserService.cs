@@ -18,9 +18,13 @@ namespace web_api.Services
         {
             var allUsers =  _context.User
                 .Include(u => u.Characters)
-                .ThenInclude(c => c.InventoryWeapons)
+                    .ThenInclude(c => c.InventoryWeapons)
                 .Include(u => u.Characters)
-                .ThenInclude(c => c.InventoryArmor)
+                    .ThenInclude(c => c.InventoryArmor)
+                .Include(u => u.Characters)
+                    .ThenInclude(c => c.ActiveContract)
+                .Include(u => u.Characters)
+                    .ThenInclude(c => c.EquippedWeapon)
                 .ToList();
             
             User user = allUsers.Find(user => user.UserId == id);
@@ -38,9 +42,13 @@ namespace web_api.Services
         {
             var allUsers = _context.User
                 .Include(u => u.Characters)
-                .ThenInclude(c => c.InventoryWeapons)
+                    .ThenInclude(c => c.InventoryWeapons)
                 .Include(u => u.Characters)
-                .ThenInclude(c => c.InventoryArmor)
+                    .ThenInclude(c => c.InventoryArmor)
+                .Include(u => u.Characters)
+                    .ThenInclude(c => c.ActiveContract)
+                .Include(u => u.Characters)
+                    .ThenInclude(c => c.EquippedWeapon)
                 .ToList();
             User user = allUsers.Find(user => user.Name == name);
             if(user!=null)

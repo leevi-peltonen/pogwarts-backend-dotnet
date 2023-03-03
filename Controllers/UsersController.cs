@@ -31,7 +31,7 @@ namespace web_api.Controllers
             _passwordHasher = passwordHasher;
         }
 
-        
+
         [HttpGet("{id}")]
         public async Task<ActionResult<UserReadDTO>> GetUserById(int id)
         {
