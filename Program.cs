@@ -30,6 +30,7 @@ builder.Services.AddScoped<WeaponService>();
 builder.Services.AddScoped<EnemyService>();
 builder.Services.AddScoped<ContractService>();
 builder.Services.AddScoped<ArmorService>();
+builder.Services.AddScoped<AchievementService>();
 
 builder.Services.AddSignalR();
 
@@ -44,6 +45,7 @@ builder.Services.AddScoped(provider => new MapperConfiguration(cfg =>
     cfg.AddProfile(new WeaponProfile());
     cfg.AddProfile(new ArmorProfile());
     cfg.AddProfile(new ContractProfile());
+    cfg.AddProfile(new AchievementProfile());
 }).CreateMapper());
 
 builder.Services.AddCors(options =>

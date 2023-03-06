@@ -31,5 +31,6 @@ namespace web_api.Models
         public virtual Weapon? EquippedWeapon { get; set; }
 
         public virtual Armor? EquippedArmor { get; set; }
+        public ICollection<Achievement> Achievements { get; set; }
     }
 }

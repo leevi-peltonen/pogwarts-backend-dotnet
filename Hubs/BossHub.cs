@@ -4,7 +4,6 @@ using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using web_api.Connections;
-using web_api.Migrations;
 using web_api.Models;
 
 namespace web_api.Hubs
@@ -12,9 +11,6 @@ namespace web_api.Hubs
     [EnableCors("AllowAllHeaders")]
     public class BossHub : Hub
     {
-        private readonly object _lock = new object();
-
-        private bool _allPlayersReady = false;
         private static bool isBossFightStarted = false;
         private readonly string _botUser;
         private IDictionary<string, CharacterConnection> _connections;
@@ -130,6 +126,7 @@ namespace web_api.Hubs
                 _connections.Remove(Context.ConnectionId);
                 await Clients.Group(characterConnection.Room).SendAsync("ReceiveMessage", _botUser, $"{characterConnection.Character} has left");
                 _numPlayersInRoom[characterConnection.Room]--;
+                _actionsRemaining[characterConnection.Room]--;
                 await Clients.Group(characterConnection.Room).SendAsync("PlayersInLobby", _numPlayersInRoom[characterConnection.Room]);
             }
             
@@ -167,7 +164,9 @@ namespace web_api.Hubs
                 await Clients.All.SendAsync("BossKilled", boss);
                 _numPlayersReady[room] = 0;
                 isBossFightStarted = false;
-            }else
+                await Clients.Group(room).SendAsync("PlayersReady", _numPlayersReady[room]);
+            }
+            else
             {
 
                 _context.Boss.Update(boss);
@@ -177,12 +176,12 @@ namespace web_api.Hubs
             await _context.SaveChangesAsync();
             // Signal that the player has completed their action for the turn
             await Clients.Group(room).SendAsync("PlayerActionCompleted", characterName);
-            /*
+            
             if (_actionsRemaining[room] == 0)
             {
-                await Clients.Group(room).SendAsync("StartNextTUrn");
+                await Clients.Group(room).SendAsync("StartNextTurn");
             }
-            */
+            
         }
 
 
@@ -244,34 +243,24 @@ namespace web_api.Hubs
                 await Clients.All.SendAsync("BossFightStarted", _numPlayersReady[bossName]);
             
         }
-        /*
-        public async Task PlayerAttack(Boss boss, string playerName, int damage, string room)
-        {
-            
-            await Clients.All.SendAsync("PlayerAttacked", playerName, damage);
-            boss.Health -= damage;
-            if(boss.Health <= 0)
-            {
-                boss.Health = boss.MaxHealth;
-                _context.Boss.Update(boss);
-                await _context.SaveChangesAsync();
-                await Clients.All.SendAsync("BossKilled", boss);
-                _numPlayersReady[room] = 0;
-                isBossFightStarted= false;
-            }
-            
-            _context.Boss.Update(boss);
-            await _context.SaveChangesAsync();
-            await Clients.All.SendAsync("BossStatus", boss);
-        }
-        */
+
 
         public async Task LeaveLobby(string characterName, string room)
         {
             _connections.Remove(Context.ConnectionId);
+            PlayerDied(characterName, room);
             await Clients.All.SendAsync("CharacterDied", characterName);
             _numPlayersInRoom[room]--;
             await Clients.Group(room).SendAsync("PlayersInLobby", _numPlayersInRoom[room]);
+            
+        }
+
+        private void PlayerDied(string characterName, string room)
+        {
+            if (_rooms[room].Contains(characterName))
+            {
+                _rooms[room].Remove(characterName);
+            }
         }
 
         public async Task EndBossFight(Boss boss, string room)

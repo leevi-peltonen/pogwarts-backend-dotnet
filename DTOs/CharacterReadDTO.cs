@@ -18,5 +18,6 @@
         public WeaponReadDTO EquippedWeapon { get; set; }
         public ArmorReadDTO EquippedArmor { get; set; }
         public ContractReadDTO ActiveContract { get; set; }
+        public ICollection<int> Achievements { get; set; }
     }
 }

@@ -25,6 +25,8 @@ namespace web_api.Services
                     .ThenInclude(c => c.ActiveContract)
                 .Include(u => u.Characters)
                     .ThenInclude(c => c.EquippedWeapon)
+                .Include(u => u.Characters)
+                    .ThenInclude(c => c.Achievements)
                 .ToList();
             
             User user = allUsers.Find(user => user.UserId == id);
@@ -49,6 +51,8 @@ namespace web_api.Services
                     .ThenInclude(c => c.ActiveContract)
                 .Include(u => u.Characters)
                     .ThenInclude(c => c.EquippedWeapon)
+                .Include(u => u.Characters)
+                    .ThenInclude(c => c.Achievements)
                 .ToList();
             User user = allUsers.Find(user => user.Name == name);
             if(user!=null)
@@ -69,7 +73,6 @@ namespace web_api.Services
                 await _context.SaveChangesAsync();
                 return user;
             }
-            // Tähän parempi händläys xd
             throw new Exception("User Exists!");
         }
 

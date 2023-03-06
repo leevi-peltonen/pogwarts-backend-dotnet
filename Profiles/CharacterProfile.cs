@@ -10,7 +10,9 @@ namespace web_api.Profiles
         public CharacterProfile(PogwartsContext context) 
         {
             _context = context;
-            CreateMap<Character, CharacterReadDTO>();
+            CreateMap<Character, CharacterReadDTO>()
+                .ForMember(dest => dest.Achievements, opt => opt.MapFrom(src => src.Achievements.Select(a => a.AchievementId)));
+
             CreateMap<CharacterCreateDTO, Character>()
                 .ForMember(c => c.User, opt => opt
                 .MapFrom(cdto => _context.User.First(u => u.Name == cdto.userName)))

@@ -20,6 +20,7 @@ namespace web_api.Services
                 .Include(c => c.InventoryArmor)
                 .Include(c => c.ActiveContract)
                 .Include(c => c.EquippedWeapon)
+                .Include(c => c.Achievements)
                 .ToListAsync();
 
             return characters;
@@ -172,6 +173,7 @@ namespace web_api.Services
                 .Include(c => c.InventoryWeapons)
                 .Include(c => c.EquippedWeapon)
                 .Include(c => c.ActiveContract)
+                .Include(c => c.Achievements)
                 .FirstOrDefaultAsync(c => c.Name == characterName);
             if (character == null) return null;
             if (character.InventoryWeapons == null) character.InventoryWeapons = new List<Weapon>();
@@ -187,6 +189,7 @@ namespace web_api.Services
                 .Include(c => c.InventoryWeapons)
                 .Include(c => c.EquippedWeapon)
                 .Include(c => c.ActiveContract)
+                .Include(c => c.Achievements)
                 .FirstOrDefaultAsync(c => c.Name == characterName);
             character.Health = health;
             await _context.SaveChangesAsync();
@@ -199,6 +202,7 @@ namespace web_api.Services
                 .Include(c => c.InventoryWeapons)
                 .Include(c => c.EquippedWeapon)
                 .Include(c => c.ActiveContract)
+                .Include(c => c.Achievements)
                 .FirstOrDefaultAsync(c => c.Name == characterName);
             character.MaxHealth = maxHealth;
             await _context.SaveChangesAsync();

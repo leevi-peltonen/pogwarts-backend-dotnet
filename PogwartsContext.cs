@@ -19,6 +19,7 @@ namespace web_api
         public DbSet<Enemy> Enemy { get; set; }
         public DbSet<Contract> Contract { get; set; }
         public DbSet<Boss> Boss { get; set; }
+        public DbSet<Achievement> Achievement { get; set; }
 
         public PogwartsContext(DbContextOptions<PogwartsContext> options) : base(options) { }
 
@@ -32,7 +33,7 @@ namespace web_api
             modelBuilder.Entity<Contract>().ToTable("Contract");
             modelBuilder.Entity<WeaponPerk>().ToTable("WeaponPerk").HasData(SeedHelper.SeedPerks());
             modelBuilder.Entity<Boss>().ToTable("Boss").HasData(SeedHelper.SeedBosses());
-
+            modelBuilder.Entity<Achievement>().ToTable("Achievement").HasData(SeedHelper.SeedAchievements());
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Characters)
@@ -62,6 +63,16 @@ namespace web_api
                 .HasMany(a => a.CharactersEquipped)
                 .WithOne(c => c.EquippedArmor)
                 .OnDelete(DeleteBehavior.SetNull);
+
+            // many to many: character achievements
+            modelBuilder.Entity<Achievement>()
+                .HasMany(a => a.CharactersCompleted)
+                .WithMany(c => c.Achievements)
+                .UsingEntity<Dictionary<string, object>>(
+                "CharacterAchievement",
+                r => r.HasOne<Character>().WithMany().HasForeignKey("AchievementId"),
+                l => l.HasOne<Achievement>().WithMany().HasForeignKey("CharacterId"),
+                je => je.HasKey("AchievementId", "CharacterId"));
         }
     }
 }

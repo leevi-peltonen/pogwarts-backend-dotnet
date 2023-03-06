@@ -71,6 +71,39 @@ namespace web_api.Data
             return bosses;
         }
 
+        public static ICollection<Achievement> SeedAchievements()
+        {
+            var achievements = new List<Achievement>
+            {
+                new Achievement()
+                {
+                    AchievementId = 1,
+                    Name = "Beginner's Luck",
+                    Description = "Level up for the first time",
+                    Reward = 10,
+                    IsHidden = false
+                },
+                new Achievement()
+                {
+                    AchievementId = 2,
+                    Name = "Challenge Accepted",
+                    Description = "Reach level 10",
+                    Reward = 100,
+                    IsHidden = false
+                },
+                new Achievement()
+                {
+                    AchievementId = 3,
+                    Name = "High Scorer",
+                    Description = "Reach level 50",
+                    Reward = 500,
+                    IsHidden = false
+                }
+            };
+
+            return achievements;
+        }
+
 
     }
 }
